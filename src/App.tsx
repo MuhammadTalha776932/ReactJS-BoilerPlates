@@ -1,14 +1,48 @@
-import { useState } from 'react'
-import './App.css'
+import * as React from 'react';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+interface IApp {
+  count: number,
+  users: Array<unknown>
+}
+class App extends React.Component<{}, IApp> {
+  constructor(props: {}) {
+    super(props);
 
-  return (
-    <div className="App">
+    this.state = {
+      count: 0,
+      users: [],
+    };
+  }
 
-    </div>
-  )
+  _incrementCount = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  componentDidMount(): void {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(usersJSON => usersJSON.json())
+      .then(users => this.setState({ users: users }))
+      .catch((e:{message:string}) => console.log(e.message));
+  }
+
+  render(): React.ReactNode {
+    return (
+      <React.Fragment>
+        {/* <h1>count : {this.state.count}</h1>
+        <button onClick={this._incrementCount}>+</button> */}
+        {
+          this.state.users.map((user:any) => {
+            return (
+              <div key={user.id} style={{ margin: '20px' }}>
+                {`${JSON.stringify(user)}`}
+              </div>
+            );
+          })
+        }
+      </React.Fragment>
+    );
+  }
 }
 
-export default App
+export default App;
