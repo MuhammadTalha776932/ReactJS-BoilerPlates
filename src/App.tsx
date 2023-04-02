@@ -1,10 +1,9 @@
 import * as React from 'react';
 import './App.css';
+import type { CatchBlockErrorType, IApp, IUser, RenderAndFunctionReturnType, _incrementCountReturnType, _incrementCountType } from 'App';
 
-interface IApp {
-  count: number,
-  users: Array<unknown>
-}
+
+
 class App extends React.Component<{}, IApp> {
   constructor(props: {}) {
     super(props);
@@ -15,7 +14,7 @@ class App extends React.Component<{}, IApp> {
     };
   }
 
-  _incrementCount = () => {
+  _incrementCount: _incrementCountType = (): _incrementCountReturnType => {
     this.setState({ count: this.state.count + 1 });
   };
 
@@ -23,16 +22,14 @@ class App extends React.Component<{}, IApp> {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(usersJSON => usersJSON.json())
       .then(users => this.setState({ users: users }))
-      .catch((e:{message:string}) => console.log(e.message));
+      .catch((e: CatchBlockErrorType) => console.log(e.message));
   }
 
-  render(): React.ReactNode {
+  render(): RenderAndFunctionReturnType {
     return (
       <React.Fragment>
-        {/* <h1>count : {this.state.count}</h1>
-        <button onClick={this._incrementCount}>+</button> */}
         {
-          this.state.users.map((user:any) => {
+          this.state.users.map((user: IUser): RenderAndFunctionReturnType => {
             return (
               <div key={user.id} style={{ margin: '20px' }}>
                 {`${JSON.stringify(user)}`}
